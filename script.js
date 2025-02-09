@@ -75,34 +75,36 @@ function renderChore(choreData, choreId) {
   const li = document.createElement("li");
   li.setAttribute("data-id", choreId);
 
-  // Checkbox for marking completion
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.checked = choreData.completed || false;
   checkbox.addEventListener("change", async () => {
-    const choreRef = doc(db, "chores", choreId);
-    await updateDoc(choreRef, { completed: checkbox.checked });
-    li.classList.toggle("completed", checkbox.checked);
+      const choreRef = doc(db, "chores", choreId);
+      await updateDoc(choreRef, { completed: checkbox.checked });
+      li.classList.toggle("completed", checkbox.checked);
   });
-
-  // Span for chore text
   const span = document.createElement("span");
   span.textContent = choreData.text;
 
-  // Delete button to remove chore
+  // NEW: Add date span
+  const dateSpan = document.createElement("span");
+  dateSpan.textContent = choreData.dueDate ? `Due: ${choreData.dueDate}` : '';
+  dateSpan.className = "due-date";
+
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete";
   deleteBtn.className = "delete";
   deleteBtn.addEventListener("click", async () => {
-    const choreRef = doc(db, "chores", choreId);
-    await deleteDoc(choreRef);
-    choreList.removeChild(li);
+      const choreRef = doc(db, "chores", choreId);
+      await deleteDoc(choreRef);
+      choreList.removeChild(li);
   });
 
-  li.append(checkbox, span, deleteBtn);
+  li.append(checkbox, span, dateSpan, deleteBtn); // NEW: Added dateSpan
   if (checkbox.checked) li.classList.add("completed");
   choreList.appendChild(li);
 }
+
 
 // Load chores from Firestore for the authenticated user
 async function loadChores(userId) {
@@ -120,16 +122,22 @@ choreForm.addEventListener("submit", async (e) => {
   const user = auth.currentUser;
   if (!user) return;
   try {
-    const docRef = await addDoc(collection(db, "chores"), {
-      userId: user.uid,
-      text: choreInput.value,
-      completed: false,
-      createdAt: new Date()
-    });
-    renderChore({ text: choreInput.value, completed: false }, docRef.id);
-    choreInput.value = "";
+      const docRef = await addDoc(collection(db, "chores"), {
+          userId: user.uid,
+          text: choreInput.value,
+          dueDate: document.getElementById('due-date').value, // NEW: Added due date
+          completed: false,
+          createdAt: new Date()
+      });
+      renderChore({ 
+          text: choreInput.value, 
+          dueDate: document.getElementById('due-date').value, // NEW: Added due date
+          completed: false 
+      }, docRef.id);
+      choreInput.value = "";
+      document.getElementById('due-date').value = ""; // NEW: Clear date input
   } catch (error) {
-    console.error("Error adding chore:", error.message);
+      console.error("Error adding chore:", error.message);
   }
 });
 
