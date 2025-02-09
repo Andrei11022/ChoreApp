@@ -7,22 +7,37 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Chore Tracker</h1>
-    <p>Stay productive by tracking your chores!</p>
-  </header>
-  <main>
-    <form id="chore-form">
-      <input type="text" id="chore-input" placeholder="Enter a new chore" required>
-      <button type="submit">Add Chore</button>
-    </form>
-    <ul id="chore-list">
-      <!-- Chores will be listed here -->
-    </ul>
-  </main>
-  <footer>
-    <p>&copy; 2025 Your Name</p>
-  </footer>
-  <script src="script.js"></script>
+  <!-- Authentication Section -->
+  <div id="auth-section">
+    <h2>Login / Sign Up</h2>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <div>
+      <button id="login-btn">Login</button>
+      <button id="signup-btn">Sign Up</button>
+    </div>
+  </div>
+
+  <!-- Main App Section (hidden until user logs in) -->
+  <div id="app-section" style="display: none;">
+    <header>
+      <h1>Chore Tracker</h1>
+      <button id="logout-btn">Logout</button>
+    </header>
+    <main>
+      <form id="chore-form">
+        <input id="chore-input" type="text" placeholder="Enter a new chore" required>
+        <button type="submit">Add Chore</button>
+      </form>
+      <ul id="chore-list">
+        <!-- Chores will load here -->
+      </ul>
+    </main>
+    <footer>
+      <p>&copy; 2025 Your Name</p>
+    </footer>
+  </div>
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>
