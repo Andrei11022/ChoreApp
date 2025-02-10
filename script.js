@@ -71,7 +71,7 @@ logoutBtn.addEventListener("click", () => {
 function renderChore(choreData, choreId) {
   const li = document.createElement("li");
   li.setAttribute("data-id", choreId);
-  li.classList.add(`priority-${choreData.priority}`); // NEW
+  li.classList.add(`priority-${choreData.priority}`);
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
