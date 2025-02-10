@@ -137,3 +137,21 @@ ul#chore-list li[data-id].priority-low {
   font-size: 12px;
   background-color: #e0e0e0;
 }
+#sort-buttons {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+#sort-buttons button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#sort-buttons button:hover {
+  background-color: #45a049;
+}

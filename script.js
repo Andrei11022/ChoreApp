@@ -145,6 +145,32 @@ document.getElementById('category').value = "home";  } catch (error) {
       console.error("Error adding chore:", error.message);
   }
 });
+function sortChores(type) {
+  const chores = Array.from(document.querySelectorAll('#chore-list li'));
+  
+  chores.sort((a, b) => {
+      switch(type) {
+          case 'date':
+              return new Date(a.querySelector('.due-date').textContent.slice(5)) - 
+                     new Date(b.querySelector('.due-date').textContent.slice(5));
+          case 'priority':
+              const priorities = {high: 3, medium: 2, low: 1};
+              return priorities[b.className.split('-')[1]] - 
+                     priorities[a.className.split('-')[1]];
+          case 'category':
+              return a.querySelector('.category-tag').textContent.localeCompare(
+                     b.querySelector('.category-tag').textContent);
+      }
+  });
+
+  const list = document.getElementById('chore-list');
+  list.innerHTML = '';
+  chores.forEach(chore => list.appendChild(chore));
+}
+
+document.getElementById('sort-date').addEventListener('click', () => sortChores('date'));
+document.getElementById('sort-priority').addEventListener('click', () => sortChores('priority'));
+document.getElementById('sort-category').addEventListener('click', () => sortChores('category'));
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
