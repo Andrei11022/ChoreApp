@@ -124,3 +124,16 @@ ul#chore-list li[data-id].priority-medium {
 ul#chore-list li[data-id].priority-low { 
   background-color: #e8f5e9 !important; 
 }
+#category {
+  padding: 10px;
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+.category-tag {
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 10px;
+  font-size: 12px;
+  background-color: #e0e0e0;
+}

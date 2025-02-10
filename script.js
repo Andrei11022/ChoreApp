@@ -29,13 +29,11 @@ const firebaseConfig = {
   measurementId: "G-WBZ7MTHRMZ"
 };
 
-// Initialize Firebase services
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Get DOM Elements
 const authSection = document.getElementById("auth-section");
 const appSection = document.getElementById("app-section");
 
@@ -49,7 +47,6 @@ const choreForm = document.getElementById("chore-form");
 const choreInput = document.getElementById("chore-input");
 const choreList = document.getElementById("chore-list");
 
-// Authentication Event Listeners
 loginBtn.addEventListener("click", () => {
   const email = emailInput.value;
   const password = passwordInput.value;
@@ -89,6 +86,9 @@ function renderChore(choreData, choreId) {
   const dateSpan = document.createElement("span");
   dateSpan.textContent = choreData.dueDate ? `Due: ${choreData.dueDate}` : '';
   dateSpan.className = "due-date";
+  const categorySpan = document.createElement("span");
+categorySpan.textContent = choreData.category;
+categorySpan.className = "category-tag";
 
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete";
@@ -99,7 +99,7 @@ function renderChore(choreData, choreId) {
       choreList.removeChild(li);
   });
 
-  li.append(checkbox, span, dateSpan, deleteBtn);
+  li.append(checkbox, span, dateSpan, categorySpan, deleteBtn);
   if (checkbox.checked) li.classList.add("completed");
   choreList.appendChild(li);
 }
@@ -120,23 +120,26 @@ choreForm.addEventListener("submit", async (e) => {
   const user = auth.currentUser;
   if (!user) return;
   try {
-const docRef = await addDoc(collection(db, "chores"), {
-  userId: user.uid,
-  text: choreInput.value,
-  dueDate: document.getElementById('due-date').value,
-  priority: document.getElementById('priority').value, // NEW
-  completed: false,
-  createdAt: new Date()
-});
+    const docRef = await addDoc(collection(db, "chores"), {
+      userId: user.uid,
+      text: choreInput.value,
+      dueDate: document.getElementById('due-date').value,
+      priority: document.getElementById('priority').value,
+      category: document.getElementById('category').value, 
+      completed: false,
+      createdAt: new Date()
+  });
+  
 
-renderChore({ 
-  text: choreInput.value, 
-  dueDate: document.getElementById('due-date').value,
-  priority: document.getElementById('priority').value, // NEW
-  completed: false 
+  renderChore({ 
+    text: choreInput.value, 
+    dueDate: document.getElementById('due-date').value,
+    priority: document.getElementById('priority').value,
+    category: document.getElementById('category').value, 
+    completed: false 
 }, docRef.id);
     choreInput.value = "";
-      document.getElementById('due-date').value = ""; // NEW: Clear date input
+      document.getElementById('due-date').value = ""; 
   } catch (error) {
       console.error("Error adding chore:", error.message);
   }

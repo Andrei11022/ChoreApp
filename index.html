@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Authentication Section -->
   <div id="auth-section">
     <h2>Login / Sign Up</h2>
     <input id="email" type="email" placeholder="Email">
@@ -18,7 +17,6 @@
     </div>
   </div>
 
-  <!-- Main App Section (hidden until user logs in) -->
   <div id="app-section" style="display: none;">
     <header>
       <h1>Chore Tracker</h1>
@@ -33,11 +31,17 @@
             <option value="medium">Medium Priority</option>
             <option value="high">High Priority</option>
         </select>
+        <select id="category" required>
+          <option value="home">Home</option>
+          <option value="work">Work</option>
+          <option value="personal">Personal</option>
+          <option value="other">Other</option>
+      </select>
+      
         <button type="submit">Add Chore</button>
     </form>
     
       <ul id="chore-list">
-        <!-- Chores will load here -->
       </ul>
     </main>
     <footer>
