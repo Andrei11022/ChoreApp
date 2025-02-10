@@ -1,4 +1,3 @@
-// Import Firebase modules from CDN (v9 modular SDK)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js";
 import {
@@ -20,7 +19,6 @@ import {
   updateDoc
 } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
 
-// Your Firebase configuration (from your Firebase console)
 const firebaseConfig = {
   apiKey: "AIzaSyAGTB891SnGawECG2i1CjSGs9meS__XWCI",
   authDomain: "choreapp-bb612.firebaseapp.com",
@@ -70,10 +68,10 @@ logoutBtn.addEventListener("click", () => {
   signOut(auth).catch((error) => console.error("Sign out error:", error.message));
 });
 
-// Render a single chore in the UI
 function renderChore(choreData, choreId) {
   const li = document.createElement("li");
   li.setAttribute("data-id", choreId);
+  li.classList.add(`priority-${choreData.priority}`); // NEW
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -83,10 +81,10 @@ function renderChore(choreData, choreId) {
       await updateDoc(choreRef, { completed: checkbox.checked });
       li.classList.toggle("completed", checkbox.checked);
   });
+
   const span = document.createElement("span");
   span.textContent = choreData.text;
 
-  // NEW: Add date span
   const dateSpan = document.createElement("span");
   dateSpan.textContent = choreData.dueDate ? `Due: ${choreData.dueDate}` : '';
   dateSpan.className = "due-date";
@@ -100,13 +98,12 @@ function renderChore(choreData, choreId) {
       choreList.removeChild(li);
   });
 
-  li.append(checkbox, span, dateSpan, deleteBtn); // NEW: Added dateSpan
+  li.append(checkbox, span, dateSpan, deleteBtn);
   if (checkbox.checked) li.classList.add("completed");
   choreList.appendChild(li);
 }
 
 
-// Load chores from Firestore for the authenticated user
 async function loadChores(userId) {
   choreList.innerHTML = "";
   const q = query(collection(db, "chores"), where("userId", "==", userId));
@@ -116,32 +113,33 @@ async function loadChores(userId) {
   });
 }
 
-// Add new chore to Firestore on form submission
 choreForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const user = auth.currentUser;
   if (!user) return;
   try {
-      const docRef = await addDoc(collection(db, "chores"), {
-          userId: user.uid,
-          text: choreInput.value,
-          dueDate: document.getElementById('due-date').value, // NEW: Added due date
-          completed: false,
-          createdAt: new Date()
-      });
-      renderChore({ 
-          text: choreInput.value, 
-          dueDate: document.getElementById('due-date').value, // NEW: Added due date
-          completed: false 
-      }, docRef.id);
-      choreInput.value = "";
+const docRef = await addDoc(collection(db, "chores"), {
+  userId: user.uid,
+  text: choreInput.value,
+  dueDate: document.getElementById('due-date').value,
+  priority: document.getElementById('priority').value, // NEW
+  completed: false,
+  createdAt: new Date()
+});
+
+renderChore({ 
+  text: choreInput.value, 
+  dueDate: document.getElementById('due-date').value,
+  priority: document.getElementById('priority').value, // NEW
+  completed: false 
+}, docRef.id);
+    choreInput.value = "";
       document.getElementById('due-date').value = ""; // NEW: Clear date input
   } catch (error) {
       console.error("Error adding chore:", error.message);
   }
 });
 
-// Monitor Authentication State and adjust UI accordingly
 onAuthStateChanged(auth, (user) => {
   if (user) {
     authSection.style.display = "none";

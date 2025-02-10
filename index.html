@@ -27,9 +27,15 @@
     <main>
       <form id="chore-form">
         <input id="chore-input" type="text" placeholder="Enter a new chore" required>
-        <input id="due-date" type="date" required> <!-- NEW: Added date input -->
+        <input id="due-date" type="date" required>
+        <select id="priority" required>
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+        </select>
         <button type="submit">Add Chore</button>
-      </form>
+    </form>
+    
       <ul id="chore-list">
         <!-- Chores will load here -->
       </ul>

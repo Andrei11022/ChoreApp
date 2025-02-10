@@ -116,3 +116,12 @@ li button.delete {
   margin: 0 10px;
   color: #666;
 }
+#priority {
+  padding: 10px;
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+.priority-high { background-color: #ffebee; }
+.priority-medium { background-color: #fff3e0; }
+.priority-low { background-color: #e8f5e9; }
