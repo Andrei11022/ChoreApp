@@ -115,6 +115,12 @@ li button.delete {
   margin: 0 10px;
 }
 
-ul#chore-list li.priority-high { background-color: #ffebee !important; }
-ul#chore-list li.priority-medium { background-color: #fff3e0 !important; }
-ul#chore-list li.priority-low { background-color: #e8f5e9 !important; }
+ul#chore-list li[data-id].priority-high { 
+  background-color: #ffebee !important; 
+}
+ul#chore-list li[data-id].priority-medium { 
+  background-color: #fff3e0 !important; 
+}
+ul#chore-list li[data-id].priority-low { 
+  background-color: #e8f5e9 !important; 
+}

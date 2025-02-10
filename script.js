@@ -72,6 +72,7 @@ function renderChore(choreData, choreId) {
   const li = document.createElement("li");
   li.setAttribute("data-id", choreId);
   li.classList.add(`priority-${choreData.priority}`);
+  console.log('Priority:', choreData.priority, 'Classes:', li.className);
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -102,6 +103,7 @@ function renderChore(choreData, choreId) {
   if (checkbox.checked) li.classList.add("completed");
   choreList.appendChild(li);
 }
+
 
 
 async function loadChores(userId) {
