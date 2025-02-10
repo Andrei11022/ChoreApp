@@ -138,9 +138,10 @@ choreForm.addEventListener("submit", async (e) => {
     category: document.getElementById('category').value, 
     completed: false 
 }, docRef.id);
-    choreInput.value = "";
-      document.getElementById('due-date').value = ""; 
-  } catch (error) {
+choreInput.value = "";
+document.getElementById('due-date').value = ""; 
+document.getElementById('priority').value = "low";
+document.getElementById('category').value = "home";  } catch (error) {
       console.error("Error adding chore:", error.message);
   }
 });
