@@ -6,7 +6,6 @@ body {
   color: #333;
 }
 
-/* Styles for the authentication and app sections */
 #auth-section, #app-section {
   width: 90%;
   max-width: 600px;
@@ -16,7 +15,6 @@ body {
   border-radius: 8px;
 }
 
-/* Auth form styles */
 #auth-section input {
   display: block;
   width: 100%;
@@ -36,7 +34,6 @@ body {
   border-radius: 4px;
 }
 
-/* Header and logout button */
 header {
   display: flex;
   justify-content: space-between;
@@ -52,7 +49,6 @@ header button {
   border-radius: 4px;
 }
 
-/* Form to add chores */
 form {
   display: flex;
   margin-bottom: 20px;
@@ -74,7 +70,6 @@ form button {
   border-radius: 4px;
 }
 
-/* Chore list styling */
 ul#chore-list {
   list-style-type: none;
   padding: 0;
@@ -103,9 +98,7 @@ li button.delete {
   cursor: pointer;
   border-radius: 4px;
 }
-/* Your existing CSS stays exactly the same, just add these new styles at the end */
 
-/* NEW: Added styles for due date */
 #due-date {
   padding: 10px;
   font-size: 16px;
@@ -122,6 +115,6 @@ li button.delete {
   margin: 0 10px;
 }
 
-.priority-high { background-color: #ffebee; }
-.priority-medium { background-color: #fff3e0; }
-.priority-low { background-color: #e8f5e9; }
+ul#chore-list li.priority-high { background-color: #ffebee !important; }
+ul#chore-list li.priority-medium { background-color: #fff3e0 !important; }
+ul#chore-list li.priority-low { background-color: #e8f5e9 !important; }
