@@ -6,7 +6,10 @@
   <title>Chore Tracker</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="light-mode">
+  <div id="theme-toggle">
+    <button id="theme-switch">🌙</button>
+  </div>
   <div id="caps-warning" style="color: orange; display: none;">Caps Lock is ON!</div>
   <div id="auth-section">
     <h2>Login / Sign Up</h2>
@@ -24,39 +27,48 @@
       <h1>Chore Tracker</h1>
       <button id="logout-btn">Logout</button>
     </header>
+    <div id="progress-container">
+      <div class="progress-circle">
+        <div class="progress-text">0%</div>
+      </div>
+      <p>Tasks Completed</p>
+    </div>
+    <div id="search-filter">
+      <input type="text" id="search-input" placeholder="Search tasks...">
+      <select id="status-filter">
+        <option value="all">All Tasks</option>
+        <option value="completed">Completed</option>
+        <option value="pending">Pending</option>
+      </select>
+    </div>
     <main>
       <form id="chore-form">
         <input id="chore-input" type="text" placeholder="Enter a new chore" required>
         <input id="due-date" type="date" required>
         <select id="priority" required>
-            <option value="low">Low Priority</option>
-            <option value="medium">Medium Priority</option>
-            <option value="high">High Priority</option>
+          <option value="low">Low Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="high">High Priority</option>
         </select>
         <select id="category" required>
           <option value="home">Home</option>
           <option value="work">Work</option>
           <option value="personal">Personal</option>
           <option value="other">Other</option>
-      </select>
-      
+        </select>
         <button type="submit">Add Chore</button>
-    </form>
-    <div id="sort-buttons">
-      <button id="sort-date">Sort by Date</button>
-      <button id="sort-priority">Sort by Priority</button>
-      <button id="sort-category">Sort by Category</button>
-  </div>
-  
-    
-      <ul id="chore-list">
-      </ul>
+      </form>
+      <div id="sort-buttons">
+        <button id="sort-date">Sort by Date</button>
+        <button id="sort-priority">Sort by Priority</button>
+        <button id="sort-category">Sort by Category</button>
+      </div>
+      <ul id="chore-list"></ul>
     </main>
     <footer>
       <p>&copy; 2025 Chore App Tracker</p>
     </footer>
   </div>
-
   <script type="module" src="script.js"></script>
 </body>
 </html>

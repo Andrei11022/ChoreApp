@@ -34,6 +34,13 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Theme Toggle
+const themeSwitch = document.getElementById('theme-switch');
+themeSwitch.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  themeSwitch.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+});
+
 const authSection = document.getElementById("auth-section");
 const appSection = document.getElementById("app-section");
 
@@ -46,6 +53,45 @@ const logoutBtn = document.getElementById("logout-btn");
 const choreForm = document.getElementById("chore-form");
 const choreInput = document.getElementById("chore-input");
 const choreList = document.getElementById("chore-list");
+
+// Search and Filter
+const searchInput = document.getElementById('search-input');
+const statusFilter = document.getElementById('status-filter');
+
+searchInput.addEventListener('input', filterChores);
+statusFilter.addEventListener('change', filterChores);
+
+function filterChores() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const filterValue = statusFilter.value;
+  const items = choreList.getElementsByTagName('li');
+
+  Array.from(items).forEach(item => {
+    const text = item.querySelector('span').textContent.toLowerCase();
+    const isCompleted = item.classList.contains('completed');
+    const matchesSearch = text.includes(searchTerm);
+    const matchesFilter = 
+      filterValue === 'all' || 
+      (filterValue === 'completed' && isCompleted) || 
+      (filterValue === 'pending' && !isCompleted);
+
+    item.style.display = matchesSearch && matchesFilter ? '' : 'none';
+  });
+  updateProgress();
+}
+
+// Progress Update
+function updateProgress() {
+  const total = choreList.getElementsByTagName('li').length;
+  const completed = choreList.getElementsByClassName('completed').length;
+  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+  
+  const progressCircle = document.querySelector('.progress-circle');
+  const progressText = document.querySelector('.progress-text');
+  
+  progressCircle.style.background = `conic-gradient(#008080 ${percentage}%, #663399 0%)`;
+  progressText.textContent = `${percentage}%`;
+}
 
 passwordInput.addEventListener("keyup", function(event) {
   if (event.getModifierState("CapsLock")) {
@@ -96,7 +142,6 @@ function renderChore(choreData, choreId) {
   const li = document.createElement("li");
   li.setAttribute("data-id", choreId);
   li.classList.add(`priority-${choreData.priority}`);
-  console.log('Priority:', choreData.priority, 'Classes:', li.className);
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -105,6 +150,8 @@ function renderChore(choreData, choreId) {
       const choreRef = doc(db, "chores", choreId);
       await updateDoc(choreRef, { completed: checkbox.checked });
       li.classList.toggle("completed", checkbox.checked);
+      updateProgress();
+      filterChores();
   });
 
   const span = document.createElement("span");
@@ -113,6 +160,7 @@ function renderChore(choreData, choreId) {
   const dateSpan = document.createElement("span");
   dateSpan.textContent = choreData.dueDate ? `Due: ${choreData.dueDate}` : '';
   dateSpan.className = "due-date";
+
   const categorySpan = document.createElement("span");
   categorySpan.textContent = choreData.category;
   categorySpan.className = "category-tag";
@@ -124,11 +172,13 @@ function renderChore(choreData, choreId) {
       const choreRef = doc(db, "chores", choreId);
       await deleteDoc(choreRef);
       choreList.removeChild(li);
+      updateProgress();
   });
 
   li.append(checkbox, span, dateSpan, categorySpan, deleteBtn);
   if (checkbox.checked) li.classList.add("completed");
   choreList.appendChild(li);
+  updateProgress();
 }
 
 async function loadChores(userId) {
@@ -138,6 +188,7 @@ async function loadChores(userId) {
   querySnapshot.forEach((docSnap) => {
     renderChore(docSnap.data(), docSnap.id);
   });
+  updateProgress();
 }
 
 choreForm.addEventListener("submit", async (e) => {
@@ -162,6 +213,7 @@ choreForm.addEventListener("submit", async (e) => {
       category: document.getElementById('category').value, 
       completed: false 
     }, docRef.id);
+    
     choreInput.value = "";
     document.getElementById('due-date').value = ""; 
     document.getElementById('priority').value = "low";
