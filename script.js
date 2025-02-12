@@ -47,6 +47,14 @@ const choreForm = document.getElementById("chore-form");
 const choreInput = document.getElementById("chore-input");
 const choreList = document.getElementById("chore-list");
 
+passwordInput.addEventListener("keyup", function(event) {
+  if (event.getModifierState("CapsLock")) {
+    document.getElementById("caps-warning").style.display = "block";
+  } else {
+    document.getElementById("caps-warning").style.display = "none";
+  }
+});
+
 loginBtn.addEventListener("click", () => {
   const email = emailInput.value;
   const password = passwordInput.value;
@@ -66,8 +74,18 @@ loginBtn.addEventListener("click", () => {
 signupBtn.addEventListener("click", () => {
   const email = emailInput.value;
   const password = passwordInput.value;
+  const errorMessage = document.getElementById("error-message");
+  
   createUserWithEmailAndPassword(auth, email, password)
-    .catch((error) => console.error("Signup error:", error.message));
+    .then(() => {
+      errorMessage.style.display = "none";
+    })
+    .catch((error) => {
+      errorMessage.style.display = "block";
+      errorMessage.textContent = error.code === "auth/email-already-in-use" 
+        ? "Email already in use!" 
+        : error.message;
+    });
 });
 
 logoutBtn.addEventListener("click", () => {
@@ -96,8 +114,8 @@ function renderChore(choreData, choreId) {
   dateSpan.textContent = choreData.dueDate ? `Due: ${choreData.dueDate}` : '';
   dateSpan.className = "due-date";
   const categorySpan = document.createElement("span");
-categorySpan.textContent = choreData.category;
-categorySpan.className = "category-tag";
+  categorySpan.textContent = choreData.category;
+  categorySpan.className = "category-tag";
 
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete";
@@ -112,8 +130,6 @@ categorySpan.className = "category-tag";
   if (checkbox.checked) li.classList.add("completed");
   choreList.appendChild(li);
 }
-
-
 
 async function loadChores(userId) {
   choreList.innerHTML = "";
@@ -137,39 +153,40 @@ choreForm.addEventListener("submit", async (e) => {
       category: document.getElementById('category').value, 
       completed: false,
       createdAt: new Date()
-  });
-  
+    });
 
-  renderChore({ 
-    text: choreInput.value, 
-    dueDate: document.getElementById('due-date').value,
-    priority: document.getElementById('priority').value,
-    category: document.getElementById('category').value, 
-    completed: false 
-}, docRef.id);
-choreInput.value = "";
-document.getElementById('due-date').value = ""; 
-document.getElementById('priority').value = "low";
-document.getElementById('category').value = "home";  } catch (error) {
-      console.error("Error adding chore:", error.message);
+    renderChore({ 
+      text: choreInput.value, 
+      dueDate: document.getElementById('due-date').value,
+      priority: document.getElementById('priority').value,
+      category: document.getElementById('category').value, 
+      completed: false 
+    }, docRef.id);
+    choreInput.value = "";
+    document.getElementById('due-date').value = ""; 
+    document.getElementById('priority').value = "low";
+    document.getElementById('category').value = "home";
+  } catch (error) {
+    console.error("Error adding chore:", error.message);
   }
 });
+
 function sortChores(type) {
   const chores = Array.from(document.querySelectorAll('#chore-list li'));
   
   chores.sort((a, b) => {
-      switch(type) {
-          case 'date':
-              return new Date(a.querySelector('.due-date').textContent.slice(5)) - 
-                     new Date(b.querySelector('.due-date').textContent.slice(5));
-          case 'priority':
-              const priorities = {high: 3, medium: 2, low: 1};
-              return priorities[b.className.split('-')[1]] - 
-                     priorities[a.className.split('-')[1]];
-          case 'category':
-              return a.querySelector('.category-tag').textContent.localeCompare(
-                     b.querySelector('.category-tag').textContent);
-      }
+    switch(type) {
+      case 'date':
+        return new Date(a.querySelector('.due-date').textContent.slice(5)) - 
+               new Date(b.querySelector('.due-date').textContent.slice(5));
+      case 'priority':
+        const priorities = {high: 3, medium: 2, low: 1};
+        return priorities[b.className.split('-')[1]] - 
+               priorities[a.className.split('-')[1]];
+      case 'category':
+        return a.querySelector('.category-tag').textContent.localeCompare(
+               b.querySelector('.category-tag').textContent);
+    }
   });
 
   const list = document.getElementById('chore-list');
