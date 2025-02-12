@@ -6,8 +6,227 @@
   --text-color-dark: #fff;
   --card-bg-light: rgba(255, 255, 255, 0.9);
   --card-bg-dark: rgba(30, 30, 30, 0.9);
+  --menu-bg-light: rgba(255, 255, 255, 0.95);
+  --menu-bg-dark: rgba(40, 40, 40, 0.95);
+  --menu-text-light: #333;
+  --menu-text-dark: #fff;
 }
 
+/* Side Menu Enhanced Styles */
+#menu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+#menu-btn {
+  font-size: 28px;
+  padding: 8px 15px;
+  background: linear-gradient(45deg, #663399, #008080);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#menu-btn:hover {
+  transform: scale(1.1);
+}
+
+.side-menu {
+  position: fixed;
+  left: -300px;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background: var(--menu-bg-light);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+.dark-mode .side-menu {
+  background: var(--menu-bg-dark);
+  color: var(--menu-text-dark);
+}
+
+.side-menu.open {
+  left: 0;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(45deg, #663399, #008080);
+  color: white;
+}
+
+.menu-button {
+  font-size: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.menu-content {
+  padding: 20px;
+}
+
+.menu-section {
+  margin-bottom: 30px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.menu-section h4 {
+  margin-bottom: 15px;
+  color: #663399;
+  border-bottom: 2px solid #008080;
+  padding-bottom: 5px;
+}
+
+/* Pomodoro Timer Enhanced */
+#pomodoro-container {
+  text-align: center;
+  padding: 15px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+#timer {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 15px 0;
+  color: #008080;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+#pomodoro-stats {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+/* Focus Heatmap */
+#focus-heatmap {
+  width: 100%;
+  height: 150px;
+  margin: 15px 0;
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+}
+
+/* Habit Tracking */
+#habit-container {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.habit-chain {
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.chain-link {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.chain-link.completed {
+  background: #4CAF50;
+}
+
+/* Mood Tracking */
+#mood-tracker {
+  margin-bottom: 15px;
+}
+
+#mood-select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 2px solid #663399;
+}
+
+/* Voice Notes */
+#voice-notes {
+  margin-top: 15px;
+}
+
+#start-recording {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(45deg, #663399, #008080);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Smart Suggestions */
+.suggestion-box {
+  background: rgba(255,255,255,0.9);
+  padding: 15px;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#ai-suggestions {
+  padding: 10px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 6px;
+}
+
+/* Energy Level Selector */
+#energy-level {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+#energy-select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 2px solid #663399;
+}
+
+/* Enhanced Charts */
+canvas {
+  margin: 15px 0;
+  max-width: 100%;
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+/* Existing Styles Below */
 body {
   font-family: Arial, sans-serif;
   background: var(--bg-gradient-light);
@@ -16,6 +235,7 @@ body {
   color: var(--text-color-light);
   transition: all 0.3s ease;
 }
+
 
 /* Statistics Dashboard */
 #stats-dashboard {
