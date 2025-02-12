@@ -457,6 +457,40 @@ themeSwitch.addEventListener('click', () => {
   themeSwitch.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
 });
 
+loginBtn.addEventListener("click", () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const errorMessage = document.getElementById("error-message");
+  
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      errorMessage.style.display = "none";
+    })
+    .catch((error) => {
+      errorMessage.style.display = "block";
+      errorMessage.textContent = "Wrong password!";
+      console.error("Login error:", error.message);
+    });
+});
+
+signupBtn.addEventListener("click", () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const errorMessage = document.getElementById("error-message");
+  
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      errorMessage.style.display = "none";
+    })
+    .catch((error) => {
+      errorMessage.style.display = "block";
+      errorMessage.textContent = error.code === "auth/email-already-in-use" 
+        ? "Email already in use!" 
+        : error.message;
+    });
+});
+
+
 // Firebase Auth Listeners
 onAuthStateChanged(auth, (user) => {
   if (user) {
