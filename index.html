@@ -27,21 +27,49 @@
       <h1>Chore Tracker</h1>
       <button id="logout-btn">Logout</button>
     </header>
+
+    <!-- Statistics Dashboard -->
+    <div id="stats-dashboard">
+      <div class="stats-card">
+        <h3>Weekly Stats</h3>
+        <div id="weekly-completion">0 tasks completed</div>
+      </div>
+      <div class="stats-card">
+        <h3>Monthly Stats</h3>
+        <div id="monthly-completion">0 tasks completed</div>
+      </div>
+      <div class="stats-card">
+        <h3>Top Category</h3>
+        <div id="top-category">None</div>
+      </div>
+    </div>
+
     <div id="progress-container">
       <div class="progress-circle">
         <div class="progress-text">0%</div>
       </div>
       <p>Tasks Completed</p>
     </div>
+
     <div id="search-filter">
       <input type="text" id="search-input" placeholder="Search tasks...">
       <select id="status-filter">
         <option value="all">All Tasks</option>
         <option value="completed">Completed</option>
         <option value="pending">Pending</option>
+        <option value="overdue">Overdue</option>
+        <option value="upcoming">Upcoming (Next 3 Days)</option>
       </select>
     </div>
+
     <main>
+      <!-- Category Management -->
+      <div id="category-management">
+        <input type="text" id="new-category-input" placeholder="New category name">
+        <input type="color" id="category-color" value="#663399">
+        <button id="add-category-btn">Add Category</button>
+      </div>
+
       <form id="chore-form">
         <input id="chore-input" type="text" placeholder="Enter a new chore" required>
         <input id="due-date" type="date" required>
@@ -58,11 +86,17 @@
         </select>
         <button type="submit">Add Chore</button>
       </form>
+
       <div id="sort-buttons">
         <button id="sort-date">Sort by Date</button>
         <button id="sort-priority">Sort by Priority</button>
         <button id="sort-category">Sort by Category</button>
       </div>
+
+      <div id="overdue-warning" class="warning-box" style="display: none;">
+        You have overdue tasks!
+      </div>
+
       <ul id="chore-list"></ul>
     </main>
     <footer>

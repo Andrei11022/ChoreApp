@@ -41,22 +41,92 @@ themeSwitch.addEventListener('click', () => {
   themeSwitch.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
 });
 
+// Custom Categories
+let customCategories = {};
+const addCategoryBtn = document.getElementById('add-category-btn');
+const categorySelect = document.getElementById('category');
+
+addCategoryBtn.addEventListener('click', () => {
+  const name = document.getElementById('new-category-input').value;
+  const color = document.getElementById('category-color').value;
+  if (name) {
+    customCategories[name] = color;
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    categorySelect.appendChild(option);
+    document.getElementById('new-category-input').value = '';
+  }
+});
+
 const authSection = document.getElementById("auth-section");
 const appSection = document.getElementById("app-section");
-
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
 const logoutBtn = document.getElementById("logout-btn");
-
 const choreForm = document.getElementById("chore-form");
 const choreInput = document.getElementById("chore-input");
 const choreList = document.getElementById("chore-list");
-
-// Search and Filter
 const searchInput = document.getElementById('search-input');
 const statusFilter = document.getElementById('status-filter');
+
+// Statistics Tracking
+let statistics = {
+  weeklyTasks: 0,
+  monthlyTasks: 0,
+  categoryCount: {}
+};
+
+function updateStatistics() {
+  const now = new Date();
+  const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+  const monthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+  
+  statistics.weeklyTasks = Array.from(choreList.getElementsByClassName('completed'))
+    .filter(li => new Date(li.querySelector('.due-date').textContent.slice(5)) > weekAgo).length;
+  
+  statistics.monthlyTasks = Array.from(choreList.getElementsByClassName('completed'))
+    .filter(li => new Date(li.querySelector('.due-date').textContent.slice(5)) > monthAgo).length;
+  
+  // Update category statistics
+  statistics.categoryCount = {};
+  Array.from(choreList.getElementsByClassName('category-tag')).forEach(tag => {
+    const category = tag.textContent;
+    statistics.categoryCount[category] = (statistics.categoryCount[category] || 0) + 1;
+  });
+  
+  // Update UI
+  document.getElementById('weekly-completion').textContent = `${statistics.weeklyTasks} tasks completed`;
+  document.getElementById('monthly-completion').textContent = `${statistics.monthlyTasks} tasks completed`;
+  
+  const topCategory = Object.entries(statistics.categoryCount)
+    .sort((a, b) => b[1] - a[1])[0];
+  document.getElementById('top-category').textContent = topCategory ? topCategory[0] : 'None';
+}
+
+function checkDueDates() {
+  const now = new Date();
+  const threeDaysFromNow = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
+  let hasOverdue = false;
+
+  Array.from(choreList.getElementsByTagName('li')).forEach(li => {
+    if (li.classList.contains('completed')) return;
+    
+    const dueDate = new Date(li.querySelector('.due-date').textContent.slice(5));
+    li.classList.remove('task-overdue', 'task-upcoming');
+    
+    if (dueDate < now) {
+      li.classList.add('task-overdue');
+      hasOverdue = true;
+    } else if (dueDate <= threeDaysFromNow) {
+      li.classList.add('task-upcoming');
+    }
+  });
+
+  document.getElementById('overdue-warning').style.display = hasOverdue ? 'block' : 'none';
+}
 
 searchInput.addEventListener('input', filterChores);
 statusFilter.addEventListener('change', filterChores);
@@ -69,30 +139,24 @@ function filterChores() {
   Array.from(items).forEach(item => {
     const text = item.querySelector('span').textContent.toLowerCase();
     const isCompleted = item.classList.contains('completed');
+    const isOverdue = item.classList.contains('task-overdue');
+    const isUpcoming = item.classList.contains('task-upcoming');
+    
     const matchesSearch = text.includes(searchTerm);
     const matchesFilter = 
       filterValue === 'all' || 
       (filterValue === 'completed' && isCompleted) || 
-      (filterValue === 'pending' && !isCompleted);
+      (filterValue === 'pending' && !isCompleted) ||
+      (filterValue === 'overdue' && isOverdue) ||
+      (filterValue === 'upcoming' && isUpcoming);
 
     item.style.display = matchesSearch && matchesFilter ? '' : 'none';
   });
   updateProgress();
+  updateStatistics();
 }
 
-// Progress Update
-function updateProgress() {
-  const total = choreList.getElementsByTagName('li').length;
-  const completed = choreList.getElementsByClassName('completed').length;
-  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
-  
-  const progressCircle = document.querySelector('.progress-circle');
-  const progressText = document.querySelector('.progress-text');
-  
-  progressCircle.style.background = `conic-gradient(#008080 ${percentage}%, #663399 0%)`;
-  progressText.textContent = `${percentage}%`;
-}
-
+// Rest
 passwordInput.addEventListener("keyup", function(event) {
   if (event.getModifierState("CapsLock")) {
     document.getElementById("caps-warning").style.display = "block";
@@ -147,11 +211,12 @@ function renderChore(choreData, choreId) {
   checkbox.type = "checkbox";
   checkbox.checked = choreData.completed || false;
   checkbox.addEventListener("change", async () => {
-      const choreRef = doc(db, "chores", choreId);
-      await updateDoc(choreRef, { completed: checkbox.checked });
-      li.classList.toggle("completed", checkbox.checked);
-      updateProgress();
-      filterChores();
+    const choreRef = doc(db, "chores", choreId);
+    await updateDoc(choreRef, { completed: checkbox.checked });
+    li.classList.toggle("completed", checkbox.checked);
+    updateProgress();
+    updateStatistics();
+    checkDueDates();
   });
 
   const span = document.createElement("span");
@@ -164,21 +229,27 @@ function renderChore(choreData, choreId) {
   const categorySpan = document.createElement("span");
   categorySpan.textContent = choreData.category;
   categorySpan.className = "category-tag";
+  if (customCategories[choreData.category]) {
+    categorySpan.style.background = customCategories[choreData.category];
+  }
 
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete";
   deleteBtn.className = "delete";
   deleteBtn.addEventListener("click", async () => {
-      const choreRef = doc(db, "chores", choreId);
-      await deleteDoc(choreRef);
-      choreList.removeChild(li);
-      updateProgress();
+    const choreRef = doc(db, "chores", choreId);
+    await deleteDoc(choreRef);
+    choreList.removeChild(li);
+    updateProgress();
+    updateStatistics();
+    checkDueDates();
   });
 
   li.append(checkbox, span, dateSpan, categorySpan, deleteBtn);
   if (checkbox.checked) li.classList.add("completed");
   choreList.appendChild(li);
   updateProgress();
+  checkDueDates();
 }
 
 async function loadChores(userId) {
@@ -189,6 +260,8 @@ async function loadChores(userId) {
     renderChore(docSnap.data(), docSnap.id);
   });
   updateProgress();
+  updateStatistics();
+  checkDueDates();
 }
 
 choreForm.addEventListener("submit", async (e) => {

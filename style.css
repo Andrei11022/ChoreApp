@@ -17,6 +17,83 @@ body {
   transition: all 0.3s ease;
 }
 
+/* Statistics Dashboard */
+#stats-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stats-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+}
+
+.stats-card h3 {
+  margin: 0 0 10px 0;
+  color: #663399;
+}
+
+/* Category Management */
+#category-management {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+#new-category-input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #663399;
+  border-radius: 6px;
+}
+
+#category-color {
+  padding: 5px;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+  width: 60px;
+  cursor: pointer;
+}
+
+/* Warning Box for Overdue Tasks */
+.warning-box {
+  background: linear-gradient(45deg, #ff6b6b, #ff8585);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Task Due Date Styling */
+.task-overdue {
+  background-color: #ffe0e0 !important;
+  border-left: 4px solid #ff4444 !important;
+}
+
+.task-upcoming {
+  background-color: #fff3cd !important;
+  border-left: 4px solid #ffc107 !important;
+}
+
 body.dark-mode {
   background: var(--bg-gradient-dark);
   color: var(--text-color-dark);
@@ -41,6 +118,62 @@ body.dark-mode {
 
 #theme-switch:hover {
   transform: rotate(360deg);
+}
+
+#auth-section, #app-section {
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: var(--card-bg-light);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  color: var(--text-color-light);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.dark-mode #auth-section,
+.dark-mode #app-section {
+  background-color: var(--card-bg-dark);
+  color: var(--text-color-dark);
+}
+
+#auth-section input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  border: 2px solid #663399;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+#auth-section input:focus {
+  border-color: #008080;
+  box-shadow: 0 0 8px rgba(0,128,128,0.3);
+  outline: none;
+}
+
+button {
+  padding: 12px 20px;
+  margin-right: 10px;
+  background: linear-gradient(45deg, #663399, #008080);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(1px);
 }
 
 /* Progress Circle */
@@ -99,99 +232,10 @@ body.dark-mode {
   background: white;
 }
 
-/* Existing styles */
-#auth-section, #app-section {
-  width: 90%;
-  max-width: 600px;
-  margin: 20px auto;
-  background-color: var(--card-bg-light);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  color: var(--text-color-light);
-  animation: fadeIn 0.5s ease-out;
-}
-
-.dark-mode #auth-section,
-.dark-mode #app-section {
-  background-color: var(--card-bg-dark);
-  color: var(--text-color-dark);
-}
-
-/* Rest of your existing CSS stays the same */
-
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #663399 0%, #008080 100%);
-  margin: 0;
-  padding: 20px;
-  color: #fff;
-}
-
-#auth-section, #app-section {
-  width: 90%;
-  max-width: 600px;
-  margin: 20px auto;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  color: #333;
-  animation: fadeIn 0.5s ease-out;
-}
-
-#auth-section input {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  font-size: 16px;
-  border: 2px solid #663399;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-#auth-section input:focus {
-  border-color: #008080;
-  box-shadow: 0 0 8px rgba(0,128,128,0.3);
-  outline: none;
-}
-
-#auth-section button {
-  padding: 12px 20px;
-  margin-right: 10px;
-  background: linear-gradient(45deg, #663399, #008080);
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 6px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-header button {
-  background: linear-gradient(45deg, #663399, #008080);
-  border: none;
-  color: #fff;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-button:active {
-  transform: translateY(1px);
 }
 
 form {
@@ -238,14 +282,14 @@ form select:focus {
 
 @media (min-width: 768px) {
   form {
-      flex-direction: row;
-      flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   form input, 
   form select {
-      flex: 1;
-      min-width: 150px;
+    flex: 1;
+    min-width: 150px;
   }
 }
 
@@ -305,9 +349,11 @@ li button.delete {
 ul#chore-list li[data-id].priority-high { 
   border-left: 4px solid #ff4444;
 }
+
 ul#chore-list li[data-id].priority-medium { 
   border-left: 4px solid #ffa500;
 }
+
 ul#chore-list li[data-id].priority-low { 
   border-left: 4px solid #4CAF50;
 }
