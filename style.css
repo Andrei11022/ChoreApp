@@ -1,37 +1,50 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background: linear-gradient(135deg, #663399 0%, #008080 100%);
   margin: 0;
-  padding: 0;
-  color: #333;
+  padding: 20px;
+  color: #fff;
 }
 
 #auth-section, #app-section {
   width: 90%;
   max-width: 600px;
   margin: 20px auto;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  color: #333;
+  animation: fadeIn 0.5s ease-out;
 }
 
 #auth-section input {
   display: block;
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 12px;
+  margin-bottom: 15px;
   font-size: 16px;
+  border: 2px solid #663399;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+#auth-section input:focus {
+  border-color: #008080;
+  box-shadow: 0 0 8px rgba(0,128,128,0.3);
+  outline: none;
 }
 
 #auth-section button {
-  padding: 10px 15px;
+  padding: 12px 20px;
   margin-right: 10px;
-  background-color: #4CAF50;
+  background: linear-gradient(45deg, #663399, #008080);
   border: none;
   color: #fff;
   cursor: pointer;
   font-size: 16px;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 header {
@@ -41,12 +54,22 @@ header {
 }
 
 header button {
-  background-color: #FF4444;
+  background: linear-gradient(45deg, #663399, #008080);
   border: none;
   color: #fff;
-  padding: 10px 15px;
+  padding: 12px 20px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(1px);
 }
 
 form {
@@ -62,6 +85,16 @@ form button {
   width: 100%;
   padding: 12px;
   margin: 0;
+  border: 2px solid #663399;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #008080;
+  box-shadow: 0 0 8px rgba(0,128,128,0.3);
+  outline: none;
 }
 
 #sort-buttons {
@@ -74,6 +107,11 @@ form button {
   flex: 1;
   min-width: 100px;
   padding: 10px;
+  background: linear-gradient(45deg, #663399, #008080);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 @media (min-width: 768px) {
@@ -89,7 +127,6 @@ form button {
   }
 }
 
-
 ul#chore-list {
   list-style-type: none;
   padding: 0;
@@ -99,24 +136,31 @@ ul#chore-list li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #e6e6e6;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 4px;
+  background-color: #fff;
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+ul#chore-list li:hover {
+  transform: translateX(5px);
 }
 
 ul#chore-list li.completed {
   text-decoration: line-through;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 li button.delete {
-  background-color: #FF4444;
+  background: linear-gradient(45deg, #ff4444, #cc0000);
   border: none;
   color: #fff;
-  padding: 5px 10px;
+  padding: 8px 12px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 #due-date {
@@ -129,6 +173,7 @@ li button.delete {
   margin: 0 10px;
   color: #666;
 }
+
 #priority {
   padding: 10px;
   font-size: 16px;
@@ -136,14 +181,15 @@ li button.delete {
 }
 
 ul#chore-list li[data-id].priority-high { 
-  background-color: #ffebee !important; 
+  border-left: 4px solid #ff4444;
 }
 ul#chore-list li[data-id].priority-medium { 
-  background-color: #fff3e0 !important; 
+  border-left: 4px solid #ffa500;
 }
 ul#chore-list li[data-id].priority-low { 
-  background-color: #e8f5e9 !important; 
+  border-left: 4px solid #4CAF50;
 }
+
 #category {
   padding: 10px;
   font-size: 16px;
@@ -151,9 +197,15 @@ ul#chore-list li[data-id].priority-low {
 }
 
 .category-tag {
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
   margin-left: 10px;
   font-size: 12px;
-  background-color: #e0e0e0;
+  background: linear-gradient(45deg, #663399, #008080);
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
