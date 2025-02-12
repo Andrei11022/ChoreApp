@@ -50,8 +50,17 @@ const choreList = document.getElementById("chore-list");
 loginBtn.addEventListener("click", () => {
   const email = emailInput.value;
   const password = passwordInput.value;
+  const errorMessage = document.getElementById("error-message");
+  
   signInWithEmailAndPassword(auth, email, password)
-    .catch((error) => console.error("Login error:", error.message));
+    .then(() => {
+      errorMessage.style.display = "none";
+    })
+    .catch((error) => {
+      errorMessage.style.display = "block";
+      errorMessage.textContent = "Wrong password!";
+      console.error("Login error:", error.message);
+    });
 });
 
 signupBtn.addEventListener("click", () => {
