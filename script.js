@@ -34,6 +34,17 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+const authSection = document.getElementById("auth-section");
+const appSection = document.getElementById("app-section");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("login-btn");
+const signupBtn = document.getElementById("signup-btn");
+const logoutBtn = document.getElementById("logout-btn");
+const choreForm = document.getElementById("chore-form");
+const choreInput = document.getElementById("chore-input");
+const choreList = document.getElementById("chore-list");
+
 // Global state
 let pomodoroStats = {
   totalSessions: 0,
@@ -456,6 +467,63 @@ themeSwitch.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
   themeSwitch.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
 });
+
+// Add this before loadChores function
+function renderChore(choreData, choreId) {
+  const li = document.createElement("li");
+  li.setAttribute("data-id", choreId);
+  li.classList.add(`priority-${choreData.priority}`);
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = choreData.completed || false;
+  checkbox.addEventListener("change", async () => {
+    const choreRef = doc(db, "chores", choreId);
+    await updateDoc(choreRef, { completed: checkbox.checked });
+    li.classList.toggle("completed", checkbox.checked);
+    updateProgress();
+    updateStatistics();
+    checkDueDates();
+  });
+
+  const span = document.createElement("span");
+  span.textContent = choreData.text;
+
+  const dateSpan = document.createElement("span");
+  dateSpan.textContent = choreData.dueDate ? `Due: ${choreData.dueDate}` : '';
+  dateSpan.className = "due-date";
+
+  const categorySpan = document.createElement("span");
+  categorySpan.textContent = choreData.category;
+  categorySpan.className = "category-tag";
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.className = "delete";
+  deleteBtn.addEventListener("click", async () => {
+    const choreRef = doc(db, "chores", choreId);
+    await deleteDoc(choreRef);
+    choreList.removeChild(li);
+    updateProgress();
+  });
+
+  li.append(checkbox, span, dateSpan, categorySpan, deleteBtn);
+  if (checkbox.checked) li.classList.add("completed");
+  choreList.appendChild(li);
+  updateProgress();
+}
+
+
+// Add loadChores function here
+async function loadChores(userId) {
+  choreList.innerHTML = "";
+  const q = query(collection(db, "chores"), where("userId", "==", userId));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((docSnap) => {
+    renderChore(docSnap.data(), docSnap.id);
+  });
+  updateProgress();
+}
 
 loginBtn.addEventListener("click", () => {
   const email = emailInput.value;
