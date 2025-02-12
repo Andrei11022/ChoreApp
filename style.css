@@ -500,18 +500,26 @@ form select:focus {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-@media (min-width: 768px) {
-  form {
-    flex-direction: row;
-    flex-wrap: wrap;
+@media (max-width: 768px) {
+  #auth-section, #app-section {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
   }
+  
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
 
   form input, 
   form select {
     flex: 1;
     min-width: 150px;
   }
-}
+
 
 ul#chore-list {
   list-style-type: none;

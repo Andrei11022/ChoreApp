@@ -30,8 +30,29 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+const menuBtn = document.getElementById('menu-btn');
+const closeMenuBtn = document.getElementById('close-menu');
+const sideMenu = document.querySelector('.side-menu');
+const errorMessage = document.getElementById("error-message");
+const logoutBtn = document.getElementById("logout-btn");
+
+menuBtn.addEventListener('click', () => {
+  sideMenu.classList.add('open');
+});
+
+closeMenuBtn.addEventListener('click', () => {
+  sideMenu.classList.remove('open');
+});
+
+const themeSwitch = document.getElementById('theme-switch');
+themeSwitch.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  themeSwitch.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+});
 
 const authSection = document.getElementById("auth-section");
 const appSection = document.getElementById("app-section");
@@ -46,11 +67,24 @@ loginBtn.addEventListener("click", () => {
   
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
-      console.log("Login successful");
+      errorMessage.style.display = "none";
     })
     .catch((error) => {
-      console.error("Login error:", error.message);
+      errorMessage.style.display = "block";
+      errorMessage.textContent = "Wrong password!";
     });
+});
+
+passwordInput.addEventListener("keyup", function(event) {
+  if (event.getModifierState("CapsLock")) {
+    document.getElementById("caps-warning").style.display = "block";
+  } else {
+    document.getElementById("caps-warning").style.display = "none";
+  }
+});
+
+logoutBtn.addEventListener("click", () => {
+  signOut(auth).catch((error) => console.error("Sign out error:", error.message));
 });
 
 onAuthStateChanged(auth, (user) => {
