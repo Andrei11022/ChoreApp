@@ -6,8 +6,6 @@
   <title>Chore Tracker</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Add heatmap.js -->
-  <script src="https://cdn.jsdelivr.net/npm/heatmap.js"></script>
 </head>
 <body class="light-mode">
   <!-- Menu Toggle Button -->
@@ -19,10 +17,9 @@
   <div id="side-menu" class="side-menu">
     <div class="menu-header">
       <h3>Menu</h3>
-      <button id="close-menu" class="menu-button">×</button>
+      <button id="close-menu">×</button>
     </div>
     <div class="menu-content">
-      <!-- Task Timer Section -->
       <div class="menu-section">
         <h4>Task Timer</h4>
         <div id="pomodoro-container">
@@ -35,55 +32,8 @@
             <option value="15">Long Break (15m)</option>
           </select>
         </div>
-        <!-- Pomodoro Statistics -->
-        <div id="pomodoro-stats">
-          <h5>Focus Statistics</h5>
-          <div id="focus-score">Focus Score: 0</div>
-          <div id="total-focus-time">Total Focus Time: 0h</div>
-          <div id="focus-heatmap"></div>
-        </div>
       </div>
 
-      <!-- Habit Tracking -->
-      <div class="menu-section">
-        <h4>Habit Tracker</h4>
-        <div id="habit-container">
-          <div id="streak-display"></div>
-          <div id="habit-chain"></div>
-          <div id="habit-suggestions"></div>
-        </div>
-      </div>
-
-      <!-- Mood Tracking -->
-      <div class="menu-section">
-        <h4>Mood Journal</h4>
-        <div id="mood-tracker">
-          <select id="mood-select">
-            <option value="5">😊 Great</option>
-            <option value="4">🙂 Good</option>
-            <option value="3">😐 Okay</option>
-            <option value="2">🙁 Poor</option>
-            <option value="1">😢 Bad</option>
-          </select>
-          <button id="add-mood">Log Mood</button>
-          <div id="mood-chart"></div>
-        </div>
-        <!-- Voice Notes -->
-        <div id="voice-notes">
-          <button id="start-recording">🎤 Record Note</button>
-          <div id="recordings-list"></div>
-        </div>
-      </div>
-
-      <!-- Smart Analytics -->
-      <div class="menu-section">
-        <h4>Smart Insights</h4>
-        <div id="productivity-patterns"></div>
-        <div id="task-suggestions"></div>
-        <div id="weather-suggestions"></div>
-      </div>
-
-      <!-- Tags Management -->
       <div class="menu-section">
         <h4>Tags Management</h4>
         <div id="tags-container">
@@ -94,12 +44,10 @@
         </div>
       </div>
 
-      <!-- Statistics -->
       <div class="menu-section">
         <h4>Statistics</h4>
         <canvas id="completion-chart"></canvas>
         <canvas id="category-chart"></canvas>
-        <canvas id="mood-productivity-chart"></canvas>
       </div>
     </div>
   </div>
@@ -123,24 +71,9 @@
 
   <div id="app-section" style="display: none;">
     <header>
-      <h1>Smart Task Manager</h1>
-      <div class="header-controls">
-        <div id="energy-level">
-          <label>Energy Level:</label>
-          <select id="energy-select">
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
-        <button id="logout-btn">Logout</button>
-      </div>
+      <h1>Chore Tracker</h1>
+      <button id="logout-btn">Logout</button>
     </header>
-
-    <div id="smart-suggestions" class="suggestion-box">
-      <h3>Smart Suggestions</h3>
-      <div id="ai-suggestions"></div>
-    </div>
 
     <div id="stats-dashboard">
       <div class="stats-card">
@@ -152,8 +85,8 @@
         <div id="monthly-completion">0 tasks completed</div>
       </div>
       <div class="stats-card">
-        <h3>Focus Score</h3>
-        <div id="focus-rating">0%</div>
+        <h3>Top Category</h3>
+        <div id="top-category">None</div>
       </div>
     </div>
 
@@ -183,7 +116,7 @@
       </div>
 
       <form id="chore-form">
-        <input id="chore-input" type="text" placeholder="Enter a new task" required>
+        <input id="chore-input" type="text" placeholder="Enter a new chore" required>
         <input id="due-date" type="date" required>
         <select id="priority" required>
           <option value="low">Low Priority</option>
@@ -197,7 +130,7 @@
           <option value="other">Other</option>
         </select>
         <div id="tags-select" class="tags-container"></div>
-        <button type="submit">Add Task</button>
+        <button type="submit">Add Chore</button>
       </form>
 
       <div id="sort-buttons">
@@ -213,7 +146,7 @@
       <ul id="chore-list"></ul>
     </main>
     <footer>
-      <p>&copy; 2025 Smart Task Manager</p>
+      <p>&copy; 2025 Chore App Tracker</p>
     </footer>
   </div>
   <script type="module" src="script.js"></script>

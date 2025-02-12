@@ -8,11 +8,9 @@
   --card-bg-dark: rgba(30, 30, 30, 0.9);
   --menu-bg-light: rgba(255, 255, 255, 0.95);
   --menu-bg-dark: rgba(40, 40, 40, 0.95);
-  --menu-text-light: #333;
-  --menu-text-dark: #fff;
 }
 
-/* Side Menu Enhanced Styles */
+/* Side Menu Styles */
 #menu-toggle {
   position: fixed;
   top: 20px;
@@ -21,15 +19,13 @@
 }
 
 #menu-btn {
-  font-size: 28px;
+  font-size: 24px;
   padding: 8px 15px;
-  background: linear-gradient(45deg, #663399, #008080);
-  border: none;
+  background: transparent;
+  border: 2px solid currentColor;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s ease;
-  color: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 #menu-btn:hover {
@@ -43,7 +39,7 @@
   width: 300px;
   height: 100vh;
   background: var(--menu-bg-light);
-  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
   transition: left 0.3s ease;
   z-index: 1001;
   overflow-y: auto;
@@ -51,7 +47,6 @@
 
 .dark-mode .side-menu {
   background: var(--menu-bg-dark);
-  color: var(--menu-text-dark);
 }
 
 .side-menu.open {
@@ -63,24 +58,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(45deg, #663399, #008080);
-  color: white;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
-.menu-button {
+#close-menu {
   font-size: 24px;
-  background: rgba(255, 255, 255, 0.2);
+  background: none;
   border: none;
-  color: white;
   cursor: pointer;
-  padding: 5px 12px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.menu-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: rotate(90deg);
+  padding: 5px 10px;
 }
 
 .menu-content {
@@ -89,142 +75,66 @@
 
 .menu-section {
   margin-bottom: 30px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .menu-section h4 {
   margin-bottom: 15px;
   color: #663399;
-  border-bottom: 2px solid #008080;
-  padding-bottom: 5px;
 }
 
-/* Pomodoro Timer Enhanced */
+/* Timer Styles */
 #pomodoro-container {
   text-align: center;
   padding: 15px;
   background: rgba(0,0,0,0.05);
   border-radius: 10px;
-  margin-bottom: 15px;
 }
 
 #timer {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: bold;
-  margin: 15px 0;
+  margin: 10px 0;
   color: #008080;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-#pomodoro-stats {
-  background: rgba(255,255,255,0.1);
-  padding: 15px;
-  border-radius: 8px;
-}
-
-/* Focus Heatmap */
-#focus-heatmap {
+#timer-type {
   width: 100%;
-  height: 150px;
-  margin: 15px 0;
-  background: rgba(255,255,255,0.8);
-  border-radius: 8px;
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 6px;
 }
 
-/* Habit Tracking */
-#habit-container {
-  background: rgba(255,255,255,0.1);
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.habit-chain {
+/* Tags Styles */
+#tags-container {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 3px;
+  border-radius: 15px;
+  color: white;
+  font-size: 12px;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
   gap: 5px;
   margin: 10px 0;
 }
 
-.chain-link {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #ddd;
-}
-
-.chain-link.completed {
-  background: #4CAF50;
-}
-
-/* Mood Tracking */
-#mood-tracker {
-  margin-bottom: 15px;
-}
-
-#mood-select {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 2px solid #663399;
-}
-
-/* Voice Notes */
-#voice-notes {
-  margin-top: 15px;
-}
-
-#start-recording {
-  width: 100%;
-  padding: 10px;
-  background: linear-gradient(45deg, #663399, #008080);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Smart Suggestions */
-.suggestion-box {
-  background: rgba(255,255,255,0.9);
-  padding: 15px;
-  border-radius: 10px;
-  margin: 20px 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-#ai-suggestions {
-  padding: 10px;
-  background: rgba(0,0,0,0.05);
-  border-radius: 6px;
-}
-
-/* Energy Level Selector */
-#energy-level {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-right: 20px;
-}
-
-#energy-select {
-  padding: 5px 10px;
-  border-radius: 6px;
-  border: 2px solid #663399;
-}
-
-/* Enhanced Charts */
+/* Charts Styles */
 canvas {
   margin: 15px 0;
   max-width: 100%;
   background: white;
   border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
 
 /* Existing Styles Below */
 body {
@@ -500,26 +410,18 @@ form select:focus {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-@media (max-width: 768px) {
-  #auth-section, #app-section {
-    width: 95%;
-    margin: 10px auto;
-    padding: 15px;
+@media (min-width: 768px) {
+  form {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
-  
-  button {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-}
-
 
   form input, 
   form select {
     flex: 1;
     min-width: 150px;
   }
-
+}
 
 ul#chore-list {
   list-style-type: none;
