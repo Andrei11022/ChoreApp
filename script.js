@@ -453,14 +453,18 @@ function checkDueDates() {
 
 
 async function loadChores(userId) {
-  choreList.innerHTML = "";
-  const q = query(collection(db, "chores"), where("userId", "==", userId));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((docSnap) => {
-    renderChore(docSnap.data(), docSnap.id);
-  });
-  updateProgress();
-  updateStatistics();
+  try {
+    choreList.innerHTML = "";
+    const q = query(collection(db, "chores"), where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((docSnap) => {
+      renderChore(docSnap.data(), docSnap.id);
+    });
+    updateProgress();
+    updateStatistics();
+  } catch (error) {
+    console.error("Error loading chores:", error);
+  }
 }
 
 
