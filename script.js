@@ -142,59 +142,64 @@ function updateTagsUI() {
 
 // Charts and Statistics
 function updateCharts() {
-  const completionCtx = document.getElementById('completion-chart').getContext('2d');
-  const categoryCtx = document.getElementById('category-chart').getContext('2d');
+  try {
+    const completionCtx = document.getElementById('completion-chart').getContext('2d');
+    const categoryCtx = document.getElementById('category-chart').getContext('2d');
 
-  // Weekly completion data
-  const completionData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [{
-      label: 'Tasks Completed',
-      data: [0, 0, 0, 0, 0, 0, 0], // Will be updated with real data
-      backgroundColor: '#008080',
-      borderColor: '#663399',
-      borderWidth: 1
-    }]
-  };
+    // Weekly completion data
+    const completionData = {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Tasks Completed',
+        data: [0, 0, 0, 0, 0, 0, 0],
+        backgroundColor: '#008080',
+        borderColor: '#663399',
+        borderWidth: 1
+      }]
+    };
 
-  // Category distribution data
-  const categoryData = {
-    labels: Object.keys(statistics.categoryCount),
-    datasets: [{
-      data: Object.values(statistics.categoryCount),
-      backgroundColor: ['#663399', '#008080', '#ff4444', '#ffa500', '#4CAF50']
-    }]
-  };
+    // Category distribution data
+    const categoryData = {
+      labels: Object.keys(statistics.categoryCount),
+      datasets: [{
+        data: Object.values(statistics.categoryCount),
+        backgroundColor: ['#663399', '#008080', '#ff4444', '#ffa500', '#4CAF50']
+      }]
+    };
 
-  // Create/update charts
-  if (window.completionChart) {
-    window.completionChart.destroy();
-  }
-  if (window.categoryChart) {
-    window.categoryChart.destroy();
-  }
+    if (window.completionChart) {
+      window.completionChart.destroy();
+    }
+    if (window.categoryChart) {
+      window.categoryChart.destroy();
+    }
 
-  window.completionChart = new Chart(completionCtx, {
-    type: 'bar',
-    data: completionData,
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true
+    window.completionChart = new Chart(completionCtx, {
+      type: 'bar',
+      data: completionData,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
         }
       }
-    }
-  });
+    });
 
-  window.categoryChart = new Chart(categoryCtx, {
-    type: 'doughnut',
-    data: categoryData,
-    options: {
-      responsive: true
-    }
-  });
+    window.categoryChart = new Chart(categoryCtx, {
+      type: 'doughnut',
+      data: categoryData,
+      options: {
+        responsive: true
+      }
+    });
+  } catch (error) {
+    console.error("Error updating charts:", error);
+  }
 }
+
+
 // Theme Toggle
 const themeSwitch = document.getElementById('theme-switch');
 themeSwitch.addEventListener('click', () => {
@@ -321,13 +326,18 @@ function renderChore(choreData, choreId) {
   checkbox.type = "checkbox";
   checkbox.checked = choreData.completed || false;
   checkbox.addEventListener("change", async () => {
-    const choreRef = doc(db, "chores", choreId);
-    await updateDoc(choreRef, { completed: checkbox.checked });
-    li.classList.toggle("completed", checkbox.checked);
-    updateProgress();
-    updateStatistics();
-    checkDueDates();
+    try {
+      const choreRef = doc(db, "chores", choreId);
+      await updateDoc(choreRef, { completed: checkbox.checked });
+      li.classList.toggle("completed", checkbox.checked);
+      updateProgress();
+      updateStatistics();
+      checkDueDates();
+    } catch (error) {
+      console.error("Error updating chore:", error);
+    }
   });
+  
 
   const span = document.createElement("span");
   span.textContent = choreData.text;
@@ -361,13 +371,18 @@ function renderChore(choreData, choreId) {
   deleteBtn.textContent = "Delete";
   deleteBtn.className = "delete";
   deleteBtn.addEventListener("click", async () => {
-    const choreRef = doc(db, "chores", choreId);
-    await deleteDoc(choreRef);
-    choreList.removeChild(li);
-    updateProgress();
-    updateStatistics();
-    checkDueDates();
+    try {
+      const choreRef = doc(db, "chores", choreId);
+      await deleteDoc(choreRef);
+      choreList.removeChild(li);
+      updateProgress();
+      updateStatistics();
+      checkDueDates();
+    } catch (error) {
+      console.error("Error deleting chore:", error);
+    }
   });
+  
 
   li.append(checkbox, span, dateSpan, categorySpan, deleteBtn);
   if (checkbox.checked) li.classList.add("completed");
