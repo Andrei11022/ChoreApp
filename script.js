@@ -417,6 +417,53 @@ choreForm.addEventListener("submit", async (e) => {
   }
 });
 
+function updateProgress() {
+  const total = choreList.getElementsByTagName('li').length;
+  const completed = choreList.getElementsByClassName('completed').length;
+  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+  
+  const progressCircle = document.querySelector('.progress-circle');
+  const progressText = document.querySelector('.progress-text');
+  
+  progressCircle.style.background = `conic-gradient(#008080 ${percentage}%, #663399 0%)`;
+  progressText.textContent = `${percentage}%`;
+}
+
+function checkDueDates() {
+  const now = new Date();
+  const threeDaysFromNow = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
+  let hasOverdue = false;
+
+  Array.from(choreList.getElementsByTagName('li')).forEach(li => {
+    if (li.classList.contains('completed')) return;
+    
+    const dueDate = new Date(li.querySelector('.due-date').textContent.slice(5));
+    li.classList.remove('task-overdue', 'task-upcoming');
+    
+    if (dueDate < now) {
+      li.classList.add('task-overdue');
+      hasOverdue = true;
+    } else if (dueDate <= threeDaysFromNow) {
+      li.classList.add('task-upcoming');
+    }
+  });
+
+  document.getElementById('overdue-warning').style.display = hasOverdue ? 'block' : 'none';
+}
+
+
+async function loadChores(userId) {
+  choreList.innerHTML = "";
+  const q = query(collection(db, "chores"), where("userId", "==", userId));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((docSnap) => {
+    renderChore(docSnap.data(), docSnap.id);
+  });
+  updateProgress();
+  updateStatistics();
+}
+
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     authSection.style.display = "none";
