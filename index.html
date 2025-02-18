@@ -115,6 +115,8 @@
         <button id="add-category-btn">Add Category</button>
       </div>
 
+    
+
       <form id="chore-form">
         <input id="chore-input" type="text" placeholder="Enter a new chore" required>
         <input id="due-date" type="date" required>
@@ -129,6 +131,28 @@
           <option value="personal">Personal</option>
           <option value="other">Other</option>
         </select>
+        <select id="repeat-interval" name="repeat">
+          <option value="none">No Repeat</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="custom">Custom</option>
+      </select>
+      
+      <div id="icon-selector">
+          <button type="button" id="icon-btn">Select Icon 📋</button>
+          <div id="icon-menu" class="icon-menu" style="display: none;">
+              <div class="icon-grid">
+                  <span>📝</span><span>📚</span><span>🏃</span>
+                  <span>🛒</span><span>🏠</span><span>💼</span>
+                  <span>💪</span><span>🎵</span><span>📱</span>
+                  <span>🎮</span><span>🍳</span><span>🧹</span>
+                  <span>💻</span><span>📞</span><span>🎨</span>
+                  <span>✉️</span><span>🔧</span><span>📅</span>
+              </div>
+          </div>
+      </div>
+  
         <div id="tags-select" class="tags-container"></div>
         <button type="submit">Add Chore</button>
       </form>

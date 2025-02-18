@@ -219,6 +219,21 @@ const choreInput = document.getElementById("chore-input");
 const choreList = document.getElementById("chore-list");
 const searchInput = document.getElementById('search-input');
 const statusFilter = document.getElementById('status-filter');
+let selectedIcon = '📋'; // Default icon
+const iconBtn = document.getElementById('icon-btn');
+const iconMenu = document.getElementById('icon-menu');
+iconBtn.addEventListener('click', () => {
+  iconMenu.style.display = iconMenu.style.display === 'none' ? 'block' : 'none';
+});
+
+document.querySelectorAll('.icon-grid span').forEach(span => {
+  span.addEventListener('click', () => {
+      selectedIcon = span.textContent;
+      iconBtn.textContent = `Select Icon ${selectedIcon}`;
+      iconMenu.style.display = 'none';
+  });
+});
+
 
 // Custom Categories
 let customCategories = {};
@@ -353,6 +368,23 @@ function renderChore(choreData, choreId) {
     categorySpan.style.background = customCategories[choreData.category];
   }
 
+  // Add icon if it exists
+if (choreData.icon) {
+  const iconSpan = document.createElement("span");
+  iconSpan.textContent = choreData.icon;
+  iconSpan.className = "task-icon";
+  li.appendChild(iconSpan);
+}
+
+// Add repeat interval if it exists
+if (choreData.repeatInterval && choreData.repeatInterval !== 'none') {
+  const repeatSpan = document.createElement("span");
+  repeatSpan.textContent = `🔄 ${choreData.repeatInterval}`;
+  repeatSpan.className = "repeat-tag";
+  li.appendChild(repeatSpan);
+}
+
+
   // Add tags if they exist
   if (choreData.tags && choreData.tags.length > 0) {
     const tagsSpan = document.createElement("span");
@@ -396,39 +428,46 @@ choreForm.addEventListener("submit", async (e) => {
   const user = auth.currentUser;
   if (!user) return;
 
-  // Get selected tags
   const selectedTags = Array.from(document.querySelectorAll('#tags-select input:checked'))
-    .map(checkbox => checkbox.value);
+      .map(checkbox => checkbox.value);
+  const repeatInterval = document.getElementById('repeat-interval').value;
 
   try {
-    const docRef = await addDoc(collection(db, "chores"), {
-      userId: user.uid,
-      text: choreInput.value,
-      dueDate: document.getElementById('due-date').value,
-      priority: document.getElementById('priority').value,
-      category: document.getElementById('category').value,
-      tags: selectedTags,
-      completed: false,
-      createdAt: new Date()
-    });
+      const docRef = await addDoc(collection(db, "chores"), {
+          userId: user.uid,
+          text: choreInput.value,
+          icon: selectedIcon,
+          repeatInterval: repeatInterval,
+          dueDate: document.getElementById('due-date').value,
+          priority: document.getElementById('priority').value,
+          category: document.getElementById('category').value,
+          tags: selectedTags,
+          completed: false,
+          createdAt: new Date()
+      });
 
-    renderChore({ 
-      text: choreInput.value, 
-      dueDate: document.getElementById('due-date').value,
-      priority: document.getElementById('priority').value,
-      category: document.getElementById('category').value,
-      tags: selectedTags,
-      completed: false 
-    }, docRef.id);
-    
-    // Reset form
-    choreInput.value = "";
-    document.getElementById('due-date').value = ""; 
-    document.getElementById('priority').value = "low";
-    document.getElementById('category').value = "home";
-    document.querySelectorAll('#tags-select input').forEach(checkbox => checkbox.checked = false);
+      renderChore({ 
+          text: choreInput.value,
+          icon: selectedIcon,
+          repeatInterval: repeatInterval,
+          dueDate: document.getElementById('due-date').value,
+          priority: document.getElementById('priority').value,
+          category: document.getElementById('category').value,
+          tags: selectedTags,
+          completed: false 
+      }, docRef.id);
+      
+      // Reset form
+      selectedIcon = '📋';
+      iconBtn.textContent = `Select Icon ${selectedIcon}`;
+      choreInput.value = "";
+      document.getElementById('due-date').value = ""; 
+      document.getElementById('priority').value = "low";
+      document.getElementById('category').value = "home";
+      document.getElementById('repeat-interval').value = "none";
+      document.querySelectorAll('#tags-select input').forEach(checkbox => checkbox.checked = false);
   } catch (error) {
-    console.error("Error adding chore:", error.message);
+      console.error("Error adding chore:", error.message);
   }
 });
 
@@ -465,7 +504,6 @@ function checkDueDates() {
 
   document.getElementById('overdue-warning').style.display = hasOverdue ? 'block' : 'none';
 }
-
 
 async function loadChores(userId) {
   try {
